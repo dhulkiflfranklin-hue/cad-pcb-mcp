@@ -1,0 +1,21 @@
+services:
+  cad-pcb-mcp:
+    build: .
+    ports:
+      - "127.0.0.1:8767:8767"
+    environment:
+      CAD_MCP_TOKEN: ${CAD_MCP_TOKEN:?Set CAD_MCP_TOKEN in .env}
+      CAD_MCP_PUBLIC_HOST: ${CAD_MCP_PUBLIC_HOST:-}
+    volumes:
+      - ./projects:/projects
+    mem_limit: 3g
+    cpus: 2
+    pids_limit: 256
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,size=256m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
